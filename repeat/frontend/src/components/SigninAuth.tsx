@@ -1,143 +1,81 @@
-import { SigninType } from "@abhilash123/common"
-import { useState } from "react"
-import { Link,useNavigate } from "react-router-dom"
-import { BACKEND_URL } from "../config"
-import axios from "axios"
+import { SigninType } from "@abhilash123/common";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../config";
+import axios from "axios";
 
+export const SigninAuth = () => {
+    const [signInput, setSigninInputs] = useState<SigninType>({
+        email: "",
+        password: "",
+    });
+    const navigate = useNavigate();
 
-export const SigninAuth = ()=>{
-    const [signInput ,setSigninInputs] = useState<SigninType>({
-        email : "",
-        password : ""
-    })
-    const navigate = useNavigate()
-    async function sendrequest (){
+    async function sendrequest() {
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,signInput) 
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, signInput);
             const jwt = response.data;
-            localStorage.setItem("token",jwt);
-            navigate("/blog/:id")
-            
+            localStorage.setItem("token", jwt);
+            navigate("/blog/:id");
         } catch (error) {
-            return alert("invalid")
-            
+            alert("Invalid credentials");
         }
-
     }
-    
-    
+
     return (
-<>
-<div style={{ 
-  display: 'flex', 
-  justifyContent: 'center', 
-  alignItems: 'center', 
-  height: '100vh', 
-  backgroundColor: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)' 
-}}>
-  <form 
-    style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '1.5rem', 
-      backgroundColor: '#fff', 
-      padding: '3rem', 
-      borderRadius: '12px', 
-      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-      width: '350px' 
-    }}
-  >
-    <h2 style={{ 
-      textAlign: 'center', 
-      margin: '0', 
-      fontSize: '1.5rem', 
-      color: '#333', 
-      fontWeight: '600' 
-    }}>Welcome Back</h2>
-    <p style={{ textAlign: 'center', fontSize: '0.9rem', color: '#666' }}>Please login to your account</p>
+        <div className="flex justify-center items-center h-screen bg-gradient-to-r from-purple-600 to-blue-500">
+            <form
+                className="flex flex-col gap-6 bg-white p-8 rounded-lg shadow-lg w-96"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    sendrequest();
+                }}
+            >
+                <h2 className="text-2xl font-bold text-gray-800 text-center">Welcome Back</h2>
+                <p className="text-sm text-gray-600 text-center">
+                    Please login to your account
+                </p>
 
-    <input
-      type="text"
-      name="email"
-      placeholder="Enter your email"
-      onChange={(e)=>{
-        setSigninInputs({
-            ...signInput,
-            email : e.target.value
-        })
-      }}
-      style={{ 
-        padding: '0.75rem', 
-        fontSize: '1rem', 
-        border: '1px solid #ddd', 
-        borderRadius: '8px', 
-        outline: 'none',
-        transition: 'border 0.3s',
-        width: '100%',
-        boxSizing: 'border-box' 
-      }}
-      onFocus={(e) => e.target.style.border = '1px solid #6a11cb'}
-      onBlur={(e) => e.target.style.border = '1px solid #ddd'}
-    />
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    onChange={(e) => {
+                        setSigninInputs({
+                            ...signInput,
+                            email: e.target.value,
+                        });
+                    }}
+                    className="p-3 border border-gray-300 rounded-lg outline-none focus:border-purple-500 transition-all"
+                />
 
-    <input
-      type="password"
-      name="password"
-      placeholder="Enter your password"
-      onChange={(e)=>{
-        setSigninInputs({
-            ...signInput,
-            password : e.target.value
-        })
-      }}
-      style={{ 
-        padding: '0.75rem', 
-        fontSize: '1rem', 
-        border: '1px solid #ddd', 
-        borderRadius: '8px', 
-        outline: 'none',
-        transition: 'border 0.3s',
-        width: '100%',
-        boxSizing: 'border-box' 
-      }}
-      onFocus={(e) => e.target.style.border = '1px solid #6a11cb'}
-      onBlur={(e) => e.target.style.border = '1px solid #ddd'}
-    />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    onChange={(e) => {
+                        setSigninInputs({
+                            ...signInput,
+                            password: e.target.value,
+                        });
+                    }}
+                    className="p-3 border border-gray-300 rounded-lg outline-none focus:border-purple-500 transition-all"
+                />
 
-    <button
-      type="submit"
-      onClick={sendrequest}
-      style={{
-        padding: '0.75rem',
-        fontSize: '1rem',
-        color: '#fff',
-        backgroundColor: '#6a11cb',
-        border: 'none',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s',
-        width: '100%'
-      }}
-      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2575fc'}
-      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6a11cb'}
-    >
-      Login
-    </button>
+                <button
+                    type="submit"
+                    className="py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+                >
+                    Login
+                </button>
 
-    <p style={{ textAlign: 'center', fontSize: '0.9rem', color: '#666' }}>
-      Don't have an account? <Link to ={"/signup"} >signup</Link>
-    </p>
-  </form>
-</div>
-
-
-
-
-
-
-
-</>
-
-
-    )
-}
+                <p className="text-sm text-gray-600 text-center">
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="text-purple-600 hover:underline">
+                        Signup
+                    </Link>
+                </p>
+            </form>
+        </div>
+    );
+};
