@@ -7,7 +7,7 @@ export const  userRouter = new Hono<{
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt'
-import {signinInput} from '@abhilash123/common'
+import {signinInput,signupInput} from '@abhilash123/common'
 
 
   
@@ -18,7 +18,7 @@ userRouter.post('/signup', async (c) => {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
-  const { success } = signinInput.safeParse(body);
+  const { success } = signupInput.safeParse(body);
 	if (!success) {
 		c.status(400);
 		return c.json({ error: "invalid input" });
