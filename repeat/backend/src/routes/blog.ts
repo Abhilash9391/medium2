@@ -101,16 +101,35 @@ blogRouter.put('/', async (c) => {
   // add pagiantion that is to return only some blogs
   blogRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
-    const blogs = await prisma.post.findMany
-    return c.json({blogs})
+      datasourceUrl: c.env.DATABASE_URL, 
+    }).$extends(withAccelerate());
+  
+    try {
+      
+      const blogs = await prisma.post.findMany({
+        select : {
+            content : true,
+            title : true,
+            id : true,
+            author : {
+                select : {
+                    name : true
+                }
+            }
 
-
-
-
-
-  })
+        }
+      });
+      
+      
+      return c.json({ blogs });
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      return c.json({ error: 'Failed to fetch blogs' }, 500);
+    } finally {
+      
+      await prisma.$disconnect();
+    }
+  });
   blogRouter.get('/:id', async (c) => {
 
     const id =  await c.req.param("id")

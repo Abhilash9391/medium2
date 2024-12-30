@@ -18,7 +18,7 @@ export const Auth = () => {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, postInputs);
             const jwt = response.data;
             localStorage.setItem("token", jwt);
-            navigate("/blog/:id");
+            navigate("/blog/s");
         } catch (error) {
             alert("Invalid credentials");
         }
