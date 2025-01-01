@@ -14,9 +14,9 @@ export const SigninAuth = () => {
     async function sendrequest() {
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, signInput);
-            const jwt = response.data;
+            const jwt = response.data.jwt;
             localStorage.setItem("token", jwt);
-            navigate("/blog/:id");
+            navigate("/blogs");
         } catch (error) {
             alert("Invalid credentials");
         }
