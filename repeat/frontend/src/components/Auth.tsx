@@ -13,7 +13,7 @@ export const Auth = () => {
     const navigate = useNavigate();
 
     async function sendrequest(event: React.FormEvent) {
-        event.preventDefault();  // Prevent default form submission
+        event.preventDefault(); 
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, postInputs);
             const jwt = response.data;

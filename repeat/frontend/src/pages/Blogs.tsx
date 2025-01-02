@@ -1,12 +1,13 @@
 import { Blogcard } from "../components/Blogcard";
 import { Appbar } from "../components/Appbar";
 import { useBlogs } from "../hooks/useblogs";
+import { BlogSkeleton } from "../components/BlogSkeleton";
 
 export const Blogs = () => {
   const { loading, blogs } = useBlogs();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><BlogSkeleton/></div>;
   }
 
   if (!blogs || blogs.length === 0) {
